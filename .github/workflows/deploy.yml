@@ -1,19 +1,28 @@
-name: Deploy Vulnerable Application                                  # workflow name
+name: websec build-n-ship
 
 on:
   push:
     branches:
       - master
+
 jobs:
-  deploy-heroku:
-    name: Deploy Heroku
+  build-n-ship:
+    name: Build & Ship Docker image
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
-        with:
-          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "app-vulnerable2022" #Must be unique in Heroku
-          heroku_email: "roxsrossve@gmail.com"
-          remote_branch: "master"
-          usedocker: true
+      - name: Checkout current repository
+        uses: actions/checkout@v4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Login to HCR
+        run: |
+          docker login --username=_ --password=${{ secrets.HTOK }} registry.heroku.com
+      - name: Build Docker image & add Heroku tag
+        run: |
+          docker buildx build --platform linux/amd64 -t registry.heroku.com/${{ secrets.HAPPNAME }}/web
+      - name: Push Docker image to HCR
+        run: |
+          docker push registry.heroku.com/${{ secrets.HAPPNAME }}/web
+      - name: Deploy new image on Heroku app
+        run: |
+          heroku container:release web --app ${{ secrets.HAPPNAME }}
