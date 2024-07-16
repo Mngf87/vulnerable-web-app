@@ -1,4 +1,4 @@
-name: Build and Analyze
+name: Build and analyze with SonarQube
 
 on:
   push:
@@ -10,30 +10,35 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
+    - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set up Java 17
+    - name: Set up JDK 17
       uses: actions/setup-java@v3
       with:
-        java-version: '17'
         distribution: 'adopt'
+        java-version: '17'
+        cache: 'gradle'
 
-    - name: Verify Java version
-      run: java -version
+    - name: Cache SonarQube packages
+      uses: actions/cache@v2
+      with:
+        path: ~/.sonar/cache
+        key: ${{ runner.os }}-sonar
 
-    - name: Download and install SonarScanner
+    - name: Download and Install SonarScanner
       run: |
         wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
-        unzip sonar-scanner-cli-4.6.2.2472-linux.zip
-        export PATH="$PATH:$HOME/sonar-scanner-4.6.2.2472-linux/bin"
+        unzip sonar-scanner-cli-4.6.2.2472-linux.zip -d $HOME
+        export PATH=$HOME/sonar-scanner-4.6.2.2472-linux/bin:$PATH
 
-    - name: Run SonarQube Scanner with debug
+    - name: SonarQube Scan
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       run: |
-        $HOME/sonar-scanner-4.6.2.2472-linux/bin/sonar-scanner -X \
-          -Dsonar.projectKey=your_project_key \
+        $HOME/sonar-scanner-4.6.2.2472-linux/bin/sonar-scanner \
+          -Dsonar.projectKey=Mngf87_vulnerable-web-app \
+          -Dsonar.organization=mngf87 \
           -Dsonar.sources=. \
           -Dsonar.host.url=https://sonarcloud.io \
           -Dsonar.login=${{ secrets.SONAR_TOKEN }}
