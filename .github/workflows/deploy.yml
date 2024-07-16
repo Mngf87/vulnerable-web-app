@@ -19,6 +19,10 @@ jobs:
           java-version: '17'
           distribution: 'adopt'
           cache: 'false'  # Deshabilita el caché de JDK para asegurarse de que se use la última versión
+          server-id: github
+          server-username: ${{ github.actor }}
+          server-password: ${{ secrets.GITHUB_TOKEN }}
+          overwrite-settings: true
 
       - name: Install SonarQube Scanner
         run: |
@@ -48,11 +52,4 @@ jobs:
           docker build --no-cache --platform linux/amd64 -t registry.heroku.com/${{ secrets.HAPPNAME }}/web .
 
       - name: Push Docker image to HCR
-        run: |
-          docker push registry.heroku.com/${{ secrets.HAPPNAME }}/web
-
-      - name: Deploy new image on Heroku app
-        env:
-          HEROKU_API_KEY: ${{ secrets.HTOK }}
-        run: |
-          heroku container:release web --app ${{ secrets.HAPPNAME }}
+        ru
