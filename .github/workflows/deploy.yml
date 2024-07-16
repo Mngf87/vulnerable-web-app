@@ -25,6 +25,6 @@ jobs:
       uses: sonarsource/sonarcloud-github-action@v2.3.0
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        SONAR_PROJECT_KEY: mngf87
-        SONAR_ORGANIZATION: Mngf87_vulnerable-web-app
+        SONAR_PROJECT_KEY: Mngf87_vulnerable-web-app  # Reemplaza con tu clave de proyecto en SonarCloud
+        SONAR_ORGANIZATION: mngf87  # Reemplaza con tu organización en SonarCloud
 
