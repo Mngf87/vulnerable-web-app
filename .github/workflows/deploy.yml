@@ -52,4 +52,11 @@ jobs:
           docker build --no-cache --platform linux/amd64 -t registry.heroku.com/${{ secrets.HAPPNAME }}/web .
 
       - name: Push Docker image to HCR
-        ru
+        run: |
+          docker push registry.heroku.com/${{ secrets.HAPPNAME }}/web
+
+      - name: Deploy new image on Heroku app
+        env:
+          HEROKU_API_KEY: ${{ secrets.HTOK }}
+        run: |
+          heroku container:release web --app ${{ secrets.HAPPNAME }}
