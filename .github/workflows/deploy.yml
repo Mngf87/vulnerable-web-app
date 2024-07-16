@@ -24,8 +24,9 @@ jobs:
     - name: SonarCloud Scan
       uses: sonarsource/sonarcloud-github-action@v2.3.0
       env:
+        GITHUBTOKEN: ${{ secrets.GIT_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        with:
+      with:
         args: >
           -Dsonar.organization=mngf87
           -Dsonar.projectKey=Mngf87_vulnerable-web-app
