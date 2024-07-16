@@ -19,9 +19,9 @@ jobs:
           java-version: '17'
           distribution: 'adopt'
           cache: 'false'  # Deshabilita el caché de JDK para asegurarse de que se use la última versión
-          server-id: github
-          server-username: ${{ github.actor }}
-          server-password: ${{ secrets.GITHUB_TOKEN }}
+          server-id: 'github'  # Nombre del servidor para configuración de Maven
+          server-username: ${{ github.actor }}  # Nombre de usuario (puede ser tu nombre de usuario de GitHub)
+          server-password: ${{ secrets.GITHUB_TOKEN }}  # Token de acceso de GitHub (secreto)
           overwrite-settings: true
 
       - name: Install SonarQube Scanner
