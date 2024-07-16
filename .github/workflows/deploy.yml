@@ -13,6 +13,12 @@ jobs:
       - name: Checkout current repository
         uses: actions/checkout@v4
 
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
       - name: Install SonarQube Scanner
         run: |
           wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
@@ -47,3 +53,4 @@ jobs:
           HEROKU_API_KEY: ${{ secrets.HTOK }}
         run: |
           heroku container:release web --app ${{ secrets.HAPPNAME }}
+
