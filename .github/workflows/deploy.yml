@@ -11,9 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout current repository
-        uses: actions/checkout@v4 
+        uses: actions/checkout@v4
         with:
-        fetch-depth: 2
+          fetch-depth: 2
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Login to HCR
@@ -21,7 +21,7 @@ jobs:
           docker login --username=_ --password=${{ secrets.HTOK }} registry.heroku.com
       - name: Build Docker image & add Heroku tag
         run: |
-          docker buildx build --platform linux/amd64 -t registry.heroku.com/${{ secrets.HAPPNAME }}/web
+          docker buildx build --platform linux/amd64 -t registry.heroku.com/${{ secrets.HAPPNAME }}/web .
       - name: Push Docker image to HCR
         run: |
           docker push registry.heroku.com/${{ secrets.HAPPNAME }}/web
