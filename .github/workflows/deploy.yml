@@ -11,8 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout current repository
-        uses: actions/checkout@v4
-        ref: master
+        uses: actions/checkout@v4 
         with:
         fetch-depth: 2
       - name: Set up Docker Buildx
