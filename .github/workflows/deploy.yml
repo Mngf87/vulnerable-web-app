@@ -32,19 +32,15 @@ jobs:
 
       - name: Build Docker image & add Heroku tag
         run: |
-          docker buildx build --platform linux/amd64 -t registry.heroku.com/${{ secrets.HAPPNAME }}/web --push .
+          docker buildx build --platform linux/amd64 -t registry.heroku.com/${{ secrets.HAPPNAME }}/web --push --build-arg BUILDKIT_INLINE_CACHE=1 --build-arg DOCKER_BUILDKIT=1
 
       - name: Push Docker image to Heroku Container Registry
         run: |
           docker push registry.heroku.com/${{ secrets.HAPPNAME }}/web
-
+      
       - name: Deploy new image on Heroku app
         run: |
           heroku container:release web --app ${{ secrets.HAPPNAME }}
-
-      - name: Fix Docker push error "405 Method Not Allowed"
-        run: |
-          docker buildx build --platform linux/amd64 -t registry.heroku.com/${{ secrets.HAPPNAME }}/web --push --build-arg BUILDKIT_INLINE_CACHE=1 --build-arg DOCKER_BUILDKIT=1
 
       - name: OWASP ZAP Scan
         uses: zaproxy/action-api-scan@v0.7.0
