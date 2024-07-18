@@ -30,11 +30,12 @@ jobs:
             -Dsonar.projectKey=Mngf87_vulnerable-web-app
 
       - name: Deploy to Heroku
-        env:
-          HEROKU_API_KEY: ${{ secrets.HTOK }}
-        run: |
-          git remote add heroku https://git.heroku.com/ekoparty-martin-garcia-ferro-d1268619b056.git
-          git push heroku master
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{ secrets.HTOK }}
+          heroku_app_name: 'ekoparty-martin-garcia-ferro-d1268619b056'
+          heroku_email: 'tu-email@ejemplo.com'
+          branch: 'master'
 
       - name: OWASP ZAP Scan
         uses: zaproxy/action-api-scan@v0.7.0
