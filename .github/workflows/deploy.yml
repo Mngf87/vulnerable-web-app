@@ -48,6 +48,3 @@ jobs:
         with:
           name: ZAP Report
           path: zap_report.html
-
-
-          name: Build and Deploy to Heroku
