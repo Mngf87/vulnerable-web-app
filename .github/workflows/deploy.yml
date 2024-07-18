@@ -32,7 +32,8 @@ jobs:
 
       - name: Build Docker image & add Heroku tag
         run: |
-          docker buildx build --platform linux/amd64 -t registry.heroku.com/${{ secrets.HAPPNAME }}/web .
+            docker buildx build --platform linux/amd64 -t registry.heroku.com/${{ secrets.HAPPNAME }}/web --push .
+          
 
       - name: Push Docker image to HCR
         run: |
